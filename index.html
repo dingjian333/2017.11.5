@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue-router.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/axios.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/rem/app.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="js/rem/app.css" />
+		<script src="js/swiper.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="js/swiper.css" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<title></title>
+	</head>
+
+	<body>
+		<!--头部-->
+		
+		<div id="app">
+			<!--开始路由-->
+			
+			<router-view></router-view>
+
+
+			<!--底部-->
+			<footer>
+				<ul>
+					<li>
+
+						<router-link to="sy">
+							<img src="image/1_31.png" />
+							<p>首页</p>
+						</router-link>
+
+					</li>
+					<li>
+						<router-link to="fx">
+							<img src="image/1_31-13.png" />
+							<p>发现</p>
+						</router-link>
+					</li>
+					<li>
+						<router-link to="hy">
+							<img src="image/1_35.png" />
+							<p>VIP会员</p>
+						</router-link>
+					</li>
+					<li>
+						<router-link to="xq">
+							<img src="image/1_35-15.png" />
+							<p>星球</p>
+						</router-link>
+					</li>
+					<li>
+						<router-link to="wd">
+							<img src="image/1_39.png" />
+							<p>我的</p>
+						</router-link>
+					</li>
+				</ul>
+			</footer>
+		</div>
+
+	</body>
+	<script type="text/javascript">
+	
+		const sy = {
+			template: `
+				<div>
+					<ul class="ul1">
+						<li>
+							<router-link to="/gx">	
+								精选
+							</router-link>
+						</li>
+						<li>
+							<router-link to="/gd">	
+								爸爸去哪儿
+							</router-link>
+						</li>
+						<li>
+							<router-link to="/dt">	
+								聚集
+							</router-link>
+						</li>
+						<li>
+							<router-link to="/phb">	
+								综艺
+							</router-link>
+						</li>
+						<li>
+							<router-link to="/phb">	
+								电视
+							</router-link>
+						</li>
+					
+					</ul>
+					
+					<router-view></router-view>
+				</div>
+			`
+		};
+
+		const fx = {
+			template: "<div>我的发现</div>"
+		}
+		const hy = {
+			template: "<div>我的VIP会员</div>"
+		}
+		const xq = {
+			template: "<div>我的星球</div>"
+		}
+		const wd = {
+			template: "<div>我的账号</div>"
+		}
+
+		//子路由
+		const gd = {
+			template: "<div>Number Two</div>"
+		}
+		const dt = {
+			template: "<div>Number Three</div>"
+		}
+		const phb = {
+			template: "<div>Number Four</div>"
+		}
+
+		const gx = {
+				data() {
+					return {
+						result: []
+					}
+				},
+				created() {
+					axios.get("data.json").then((res) => {
+						this.result = res.data.data
+						console.log(res)
+					})
+				},
+				template: `
+				
+			<div>
+			
+				<div class="box1">
+					<div class="box2">
+						<input type="text" placeholder="电视剧" style="color: white;"/>
+					</div>
+					<div class="box3">
+						<img src="image/1_07.png"/>
+						<img src="image/1_09.png"/>
+						<img src="image/1_11.png"/>
+					</div>
+				</div>
+				
+				<div class="swiper-container lb">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide">
+							<img src="image/1_20.png"/>
+						</div>
+						<div class="swiper-slide">
+							<img src="image/1_20.png"/>
+						</div>
+						<div class="swiper-slide">
+							<img src="image/1_20.png"/>
+						</div>
+						<div class="swiper-slide">
+							<img src="image/1_20.png"/>
+						</div>
+						<div class="swiper-slide">
+							<img src="image/1_20.png"/>
+						</div>
+						
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+				
+			<div class="main">
+
+					<img src="image/1_22.png"/>
+
+			</div>
+				
+			<p class="p1">正在热播 </p>	
+				
+
+		<div class="fot">
+			<ul>
+				<li v-for="str in result">
+					<img :src="str.img"/>
+					<p>{{str.p}}</p>
+					<p class="pp">{{str.p1}}</p>
+				</li>
+			</ul>
+		</div>
+				
+	</div>`,
+				//配置轮播
+				mounted() {
+					setTimeout(function() {
+						new Swiper(".lb", {
+							autoplay: 1000,
+							loop: true,
+							pagination: ".swiper-pagination",
+							autoplayDisableOnInteraction: false,
+							paginationClickable: true,
+						})
+					}, 200)
+
+				}
+			}
+			//配置路由
+		const routes = [{
+			path: "/sy",
+			component: sy,
+			children: [{
+				path: "/gx",
+				component: gx
+			}, {
+				path: "/gd",
+				component: gd
+			}, {
+				path: "/dt",
+				component: dt
+			}, {
+				path: "/phb",
+				component: phb
+			}, {
+				path: "/",
+				redirect: "/gx"
+			}]
+		}, {
+			path: "/fx",
+			component: fx
+		}, {
+			path: "/hy",
+			component: hy
+		}, {
+			path: "/xq",
+			component: xq
+		},{
+			path: "/wd",
+			component: wd
+		}, {
+			path: "/",
+			redirect: "/sy"
+		}];
+
+		const router = new VueRouter({
+			routes
+		});
+
+		new Vue({
+			el: "#app",
+			router
+		})
+	</script>
+
+	<!--<script src="index.js" type="text/javascript" charset="utf-8"></script>-->
+
+</html>
